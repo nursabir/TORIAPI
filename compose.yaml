@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  postgres:
+    image: 'postgres:13'
+    container_name: 'ToriApiPg'
+    restart: always
+    ports:
+      - "5439:5432"
+    environment:
+      - POSTGRES_DB=ToriApiDb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
