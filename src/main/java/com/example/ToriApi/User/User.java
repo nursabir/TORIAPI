@@ -16,11 +16,12 @@ import java.util.List;
 @Getter
 @Setter
 public class User {
+        @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user")
+    private Integer id;
+
     //    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id_user")
-//    private Integer id;
-    @Id
     @Column(name = "login", unique = true)
     private String login;
     @Column(name = "password")
@@ -35,6 +36,8 @@ public class User {
     @Column(name = "friends_requests", columnDefinition = "VARCHAR[]")
     @Convert(converter = StringListConverter.class)
     private List<String> friendsRequests;
+
+
 
 }
 

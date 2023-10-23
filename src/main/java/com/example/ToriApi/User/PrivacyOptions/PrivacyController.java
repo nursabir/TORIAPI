@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class PrivacyController {
 
     private UserPrivacyService userPrivacyService;
+
     @PostMapping("/register")
     public ResponseEntity<?> userRegistration(@RequestBody User user) {
         return userPrivacyService.createUser(user);
@@ -23,5 +24,10 @@ public class PrivacyController {
     @PostMapping("/entry")
     public ResponseEntity<User> entranceInTory(@RequestParam String login, @RequestParam String password) {
         return userPrivacyService.allowIn(login, password);
+    }
+
+    @PostMapping("/updateData")
+    public ResponseEntity<User> updateUserData(@RequestBody User user) {
+        return userPrivacyService.updateUserData(user);
     }
 }

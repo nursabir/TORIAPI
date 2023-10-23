@@ -4,6 +4,8 @@ import com.example.ToriApi.User.User;
 import com.example.ToriApi.User.AdministrationOptions.UserAdministrationController;
 import com.example.ToriApi.User.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -11,11 +13,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * @author Bulat Sharapov
  */
 @Service
 @AllArgsConstructor
+@Getter
+@Setter
 public class UserPrivacyService {
 
     private UserRepository userRepository;
@@ -28,12 +34,16 @@ public class UserPrivacyService {
      */
     public ResponseEntity<?> createUser(User user) {
         System.out.println("Создаем юзера");
-        // TODO: 20.10.2023 такой чисто экспериментальный подход для меня. т.к я другому методу все делигирую
-        if (userRepository.findByLogin(user.getLogin()).isPresent())
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("We have this login in database: ");
-        else {
-            User createUser = userRepository.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
+        try {
+            if (userRepository.findByLogin(user.getLogin()).isPresent())
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("We have this login in database: ");
+            else {
+                User createUser = userRepository.save(user);
+                return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
+            }
+        } catch (Exception e) {
+            logger.error("Smth goes wrong ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -46,6 +56,31 @@ public class UserPrivacyService {
                 // Пароли совпадают, возвращаем успешный статус со сущностью пользователя
                 return ResponseEntity.ok(allowInUser);
             } else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception e) {
+            logger.error("Smth goes wrong ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // TODO: 23.10.2023  пока не понимаю что мы тут менять будем.
+    // Пока все поменяем кроме внешнего ключа (логин)
+    public ResponseEntity<User> updateUserData(User user) {
+        System.out.println("Обновляем данные о пользователе");
+        try {
+            Optional<User> currentUser = userRepository.findById(user.getId());
+
+            if (currentUser.isPresent()) {
+                User existingUser = currentUser.get();
+                existingUser.setPassword(user.getPassword());
+                existingUser.setLogin(user.getLogin());
+                existingUser.setEmail(user.getEmail());
+
+                userRepository.save(existingUser);
+
+                return ResponseEntity.ok(existingUser);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } catch (Exception e) {
             logger.error("Smth goes wrong ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
