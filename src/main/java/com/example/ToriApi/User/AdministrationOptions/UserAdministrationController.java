@@ -22,4 +22,31 @@ public class UserAdministrationController {
     public ResponseEntity<User> getUserByLogin(@PathVariable String login) {
         return userService.getUserByLogin(login);
     }
+
+    /**
+     * @param id айди человека, который отправляет заявку на добавление в друзья
+     * @param login логин человека, которому он отправляет эту заявку
+     */
+    @PostMapping("{id}/addFriend/{login}")
+    public ResponseEntity<?> sendFriendRequest(@PathVariable Integer id, @PathVariable String login) {
+        return userService.sendFriendRequest(id, login);
+    }
+
+    /**
+     * @param id айди человека, которому отправили заявку
+     * @param login логин человека, который отправил заявку
+     */
+    @PostMapping("{id}/acceptFriend/{login}")
+    public ResponseEntity<?> acceptFriendRequest(@PathVariable Integer id, @PathVariable String login) {
+        return userService.acceptFriendRequest(id, login);
+    }
+    /**
+     * Метод будет отклонять заявку на добавляение в кореша
+     * @param id айди человека, которому отправили заявку
+     * @param login логин человека, который отправил заявку
+     */
+    @PostMapping("{id}/rejectFriend/{login}")
+    public ResponseEntity<?> rejectFriendRequest(@PathVariable Integer id, @PathVariable String login) {
+        return userService.rejectFriendRequest(id, login);
+    }
 }

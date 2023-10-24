@@ -35,8 +35,8 @@ public class UserPrivacyService {
     public ResponseEntity<?> createUser(User user) {
         System.out.println("Создаем юзера");
         try {
-            if (userRepository.findByLogin(user.getLogin()).isPresent())
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("We have this login in database: ");
+            if (userRepository.findById(user.getId()).isPresent())
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("We have this id in database: ");
             else {
                 User createUser = userRepository.save(user);
                 return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
@@ -71,9 +71,7 @@ public class UserPrivacyService {
 
             if (currentUser.isPresent()) {
                 User existingUser = currentUser.get();
-                existingUser.setPassword(user.getPassword());
                 existingUser.setLogin(user.getLogin());
-                existingUser.setEmail(user.getEmail());
 
                 userRepository.save(existingUser);
 

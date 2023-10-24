@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Optional;
+
 /**
  * @author Bulat Sharapov
  */
@@ -21,16 +24,6 @@ public class UserService {
     private final Logger logger = LoggerFactory.getLogger(UserAdministrationController.class);
 
 
-//        try {
-//            if (getUserByLogin(user.getLogin()) != null) {
-//                return ResponseEntity.status(HttpStatus.CONFLICT).body("We have this login in database: ");
-//            }
-//            User createUser = userRepository.save(user);
-//            return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
-//        } catch (Exception exception) {
-//            logger.error("Internal server error", exception);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
     /**
      * @param login айди юзера
      * @return Возвращаем юзера по айди.
@@ -52,21 +45,93 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-//    @GetMapping("/{id}")
-//    @ResponseBody
-//    public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
-//        System.out.println("Ищем по айдишнику");
-//        try {
-//            User user = userRepository.findById(id)
-//                    .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
-//            return ResponseEntity.ok().body(user);
-//        } catch (ResourceNotFoundException exception) {
-//            logger.error("Error while getting user", exception);
-//            return ResponseEntity.notFound().build();
-//        } catch (Exception exception) {
-//            logger.error("Internal server error", exception);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
 
+    public ResponseEntity<?> sendFriendRequest(Integer id, String login) {
+        System.out.println("Отправляем заявку в друзья");
+        try {
+            Optional<User> userOptional = userRepository.findById(id);
+            Optional<User> userOptional2 = userRepository.findByLogin(login);
+
+            if (userOptional.isPresent() && userOptional2.isPresent()) {
+                User user = userOptional.get(); // чел, который отправляет заявку
+
+                User user2 = userOptional2.get(); // чел, которому заявку отправили
+//                user.getFriends().add(login);// создали заявку как друга
+                user2.getFriendsRequests().add(user.getLogin()); // add login as request
+                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
+                // у друга во friendsList
+                return ResponseEntity.ok().body("Заявку создали");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (ResourceNotFoundException exception) {
+            logger.error("Error while getting user", exception);
+            return ResponseEntity.notFound().build();
+        } catch (Exception exception) {
+            logger.error("Internal server error", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    public ResponseEntity<?> acceptFriendRequest(Integer id, String login) {
+        System.out.println("Принимаем заявку в друзья");
+        try {
+            Optional<User> userOptional = userRepository.findById(id);
+            Optional<User> userOptional2 = userRepository.findByLogin(login);
+
+            if (userOptional.isPresent() && userOptional2.isPresent()) {
+                User userAccepter = userOptional.get(); // чел, который принимает заявку
+                User userRequester = userOptional2.get(); // чел, который отправил
+
+                // друг другу логины как кореша
+                userAccepter.getFriends().add(userRequester.getLogin());
+                userRequester.getFriends().add(userAccepter.getLogin());
+                
+                //удаляем такой фриенд реквест
+                userRepository.removeFromFriendsRequestsById(userAccepter.getId(), userRequester.getLogin());
+                // TODO: 24.10.2023  как я пойму у того ли типа я удаляю ?
+
+                
+                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
+                // у друга во friendsList
+                return ResponseEntity.ok().body("Заявку создали");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (ResourceNotFoundException exception) {
+            logger.error("Error while getting user", exception);
+            return ResponseEntity.notFound().build();
+        } catch (Exception exception) {
+            logger.error("Internal server error", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    public ResponseEntity<?> rejectFriendRequest(Integer id, String login) {
+        System.out.println("Отклоняем заявку в друзья");
+        try {
+            Optional<User> userOptional = userRepository.findById(id);
+            Optional<User> userOptional2 = userRepository.findByLogin(login);
+
+            if (userOptional.isPresent() && userOptional2.isPresent()) {
+                User userAccepter = userOptional.get(); // чел, который отклоняет заявку
+                User userRequester = userOptional2.get(); // чел, который отправил
+
+                //удаляем такой фриенд реквест
+                userRepository.removeFromFriendsRequestsById(userAccepter.getId(), userRequester.getLogin());
+                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
+                // у друга во friendsList
+
+                return ResponseEntity.ok().body("Заявку создали");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (ResourceNotFoundException exception) {
+            logger.error("Error while getting user", exception);
+            return ResponseEntity.notFound().build();
+        } catch (Exception exception) {
+            logger.error("Internal server error", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

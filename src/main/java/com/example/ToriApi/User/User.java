@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 public class User {
-        @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
     private Integer id;
@@ -29,14 +29,15 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "friends_array", columnDefinition = "VARCHAR[]")
+    @Column(name = "friends_array", columnDefinition = "VARCHAR")
     @Convert(converter = StringListConverter.class)
     private List<String> friends;
+//    private String friends;
 
-    @Column(name = "friends_requests", columnDefinition = "VARCHAR[]")
+    @Column(name = "friends_requests",  columnDefinition = "VARCHAR")
     @Convert(converter = StringListConverter.class)
     private List<String> friendsRequests;
-
+//    private String friendsRequests;
 
 
 }
