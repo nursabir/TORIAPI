@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/privacy")
 @AllArgsConstructor
 public class PrivacyController {
-
     private UserPrivacyService userPrivacyService;
 
     @PostMapping("/register")

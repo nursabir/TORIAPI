@@ -376,3 +376,136 @@ Caused by: org.hibernate.query.SemanticException: The assignment expression type
 2023-10-25T00:33:12.733+03:00  INFO 12192 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2023-10-25T00:33:12.733+03:00  INFO 12192 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2023-10-25T00:33:12.735+03:00  INFO 12192 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-10-25T23:42:37.006+03:00  INFO 19196 --- [main] com.example.ToriApi.ToriApiApplication   : Starting ToriApiApplication using Java 19 with PID 19196 (C:\Users\kiril\IdeaProjects\TORIAPI\target\classes started by qwerty in C:\Users\kiril\IdeaProjects\TORIAPI)
+2023-10-25T23:42:37.008+03:00  INFO 19196 --- [main] com.example.ToriApi.ToriApiApplication   : No active profile set, falling back to 1 default profile: "default"
+2023-10-25T23:42:37.052+03:00  INFO 19196 --- [main] .s.b.d.c.l.DockerComposeLifecycleManager : Using Docker Compose file 'C:\Users\kiril\IdeaProjects\TORIAPI\compose.yaml'
+2023-10-25T23:42:38.998+03:00  INFO 19196 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-10-25T23:42:39.035+03:00  INFO 19196 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32 ms. Found 3 JPA repository interfaces.
+2023-10-25T23:42:39.403+03:00  INFO 19196 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-10-25T23:42:39.410+03:00  INFO 19196 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-10-25T23:42:39.410+03:00  INFO 19196 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2023-10-25T23:42:39.474+03:00  INFO 19196 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-10-25T23:42:39.474+03:00  INFO 19196 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 960 ms
+2023-10-25T23:42:39.579+03:00  INFO 19196 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-10-25T23:42:39.619+03:00  INFO 19196 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-10-25T23:42:39.620+03:00  INFO 19196 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-10-25T23:42:39.722+03:00  INFO 19196 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-10-25T23:42:39.818+03:00  INFO 19196 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-10-25T23:42:39.831+03:00  INFO 19196 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-10-25T23:42:39.908+03:00  INFO 19196 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4b343b6d
+2023-10-25T23:42:39.909+03:00  INFO 19196 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-10-25T23:42:40.113+03:00  INFO 19196 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-10-25T23:42:40.579+03:00  INFO 19196 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-10-25T23:42:40.670+03:00  WARN 19196 --- [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2023-10-25T23:42:40.670+03:00  WARN 19196 --- [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukpsr2p57456rdk54mlqtjxq18c" of relation "tori_user" does not exist, skipping
+2023-10-25T23:42:40.684+03:00  INFO 19196 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-10-25T23:42:40.930+03:00  INFO 19196 --- [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2023-10-25T23:42:41.204+03:00  WARN 19196 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-10-25T23:42:41.687+03:00  INFO 19196 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-10-25T23:42:41.694+03:00  INFO 19196 --- [main] com.example.ToriApi.ToriApiApplication   : Started ToriApiApplication in 4.969 seconds (process running for 5.808)
+2023-10-25T23:42:49.407+03:00  INFO 19196 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-10-25T23:42:49.407+03:00  INFO 19196 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-10-25T23:42:49.408+03:00  INFO 19196 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-10-25T23:42:50.064+03:00  INFO 19196 --- [http-nio-8080-exec-5] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 343 ms
+2023-10-25T23:45:35.637+03:00  INFO 19196 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-10-25T23:45:35.638+03:00  INFO 19196 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-10-25T23:45:35.640+03:00  INFO 19196 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-10-25T23:45:39.513+03:00  INFO 12416 --- [main] com.example.ToriApi.ToriApiApplication   : Starting ToriApiApplication using Java 19 with PID 12416 (C:\Users\kiril\IdeaProjects\TORIAPI\target\classes started by qwerty in C:\Users\kiril\IdeaProjects\TORIAPI)
+2023-10-25T23:45:39.515+03:00  INFO 12416 --- [main] com.example.ToriApi.ToriApiApplication   : No active profile set, falling back to 1 default profile: "default"
+2023-10-25T23:45:39.555+03:00  INFO 12416 --- [main] .s.b.d.c.l.DockerComposeLifecycleManager : Using Docker Compose file 'C:\Users\kiril\IdeaProjects\TORIAPI\compose.yaml'
+2023-10-25T23:45:41.406+03:00  INFO 12416 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-10-25T23:45:41.439+03:00  INFO 12416 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 28 ms. Found 3 JPA repository interfaces.
+2023-10-25T23:45:41.745+03:00  INFO 12416 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-10-25T23:45:41.751+03:00  INFO 12416 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-10-25T23:45:41.751+03:00  INFO 12416 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2023-10-25T23:45:41.808+03:00  INFO 12416 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-10-25T23:45:41.808+03:00  INFO 12416 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 813 ms
+2023-10-25T23:45:41.894+03:00  INFO 12416 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-10-25T23:45:41.935+03:00  INFO 12416 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-10-25T23:45:41.937+03:00  INFO 12416 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-10-25T23:45:42.017+03:00  INFO 12416 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-10-25T23:45:42.100+03:00  INFO 12416 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-10-25T23:45:42.110+03:00  INFO 12416 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-10-25T23:45:42.172+03:00  INFO 12416 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4005e485
+2023-10-25T23:45:42.173+03:00  INFO 12416 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-10-25T23:45:42.354+03:00  INFO 12416 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-10-25T23:45:42.773+03:00  INFO 12416 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-10-25T23:45:42.808+03:00  INFO 12416 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-10-25T23:45:43.020+03:00  INFO 12416 --- [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2023-10-25T23:45:43.275+03:00  WARN 12416 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-10-25T23:45:43.728+03:00  INFO 12416 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-10-25T23:45:43.734+03:00  INFO 12416 --- [main] com.example.ToriApi.ToriApiApplication   : Started ToriApiApplication in 4.492 seconds (process running for 4.911)
+2023-10-25T23:45:54.367+03:00  INFO 12416 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-10-25T23:45:54.368+03:00  INFO 12416 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-10-25T23:45:54.369+03:00  INFO 12416 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-10-25T23:45:54.923+03:00  INFO 12416 --- [http-nio-8080-exec-5] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 322 ms
+2023-10-25T23:49:35.954+03:00  INFO 12416 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-10-25T23:49:35.955+03:00  INFO 12416 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-10-25T23:49:35.957+03:00  INFO 12416 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-10-25T23:57:04.145+03:00  INFO 19284 --- [main] com.example.ToriApi.ToriApiApplication   : Starting ToriApiApplication using Java 19 with PID 19284 (C:\Users\kiril\IdeaProjects\TORIAPI\target\classes started by qwerty in C:\Users\kiril\IdeaProjects\TORIAPI)
+2023-10-25T23:57:04.147+03:00  INFO 19284 --- [main] com.example.ToriApi.ToriApiApplication   : No active profile set, falling back to 1 default profile: "default"
+2023-10-25T23:57:04.186+03:00  INFO 19284 --- [main] .s.b.d.c.l.DockerComposeLifecycleManager : Using Docker Compose file 'C:\Users\kiril\IdeaProjects\TORIAPI\compose.yaml'
+2023-10-25T23:57:06.106+03:00  INFO 19284 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-10-25T23:57:06.139+03:00  INFO 19284 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 28 ms. Found 3 JPA repository interfaces.
+2023-10-25T23:57:06.445+03:00  INFO 19284 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-10-25T23:57:06.451+03:00  INFO 19284 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-10-25T23:57:06.451+03:00  INFO 19284 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2023-10-25T23:57:06.524+03:00  INFO 19284 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-10-25T23:57:06.524+03:00  INFO 19284 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 849 ms
+2023-10-25T23:57:06.611+03:00  INFO 19284 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-10-25T23:57:06.650+03:00  INFO 19284 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2023-10-25T23:57:06.652+03:00  INFO 19284 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-10-25T23:57:06.753+03:00  INFO 19284 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-10-25T23:57:06.837+03:00  INFO 19284 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-10-25T23:57:06.848+03:00  INFO 19284 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-10-25T23:57:06.910+03:00  INFO 19284 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@636dbfe7
+2023-10-25T23:57:06.911+03:00  INFO 19284 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-10-25T23:57:07.081+03:00  INFO 19284 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-10-25T23:57:07.146+03:00 ERROR 19284 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.MappingException: The property com.example.ToriApi.Photo.Photo#image uses a wrapper type Byte[]/Character[] which indicates an issue in your domain model. These types have been treated like byte[]/char[] until Hibernate 6.2 which meant that null elements were not allowed, but on JDBC were processed like VARBINARY or VARCHAR. If you don't use nulls in your arrays, change the type of the property to byte[]/char[]. To allow explicit uses of the wrapper types Byte[]/Character[] which allows null element but has a different serialization format than before Hibernate 6.2, configure the setting hibernate.type.wrapper_array_handling to the value ALLOW. To revert to the legacy treatment of these types, configure the value to LEGACY. For more information on this matter, consult the migration guide of Hibernate 6.2 and the Javadoc of the org.hibernate.cfg.AvailableSettings.WRAPPER_ARRAY_HANDLING field.
+2023-10-25T23:57:07.147+03:00  WARN 19284 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.MappingException: The property com.example.ToriApi.Photo.Photo#image uses a wrapper type Byte[]/Character[] which indicates an issue in your domain model. These types have been treated like byte[]/char[] until Hibernate 6.2 which meant that null elements were not allowed, but on JDBC were processed like VARBINARY or VARCHAR. If you don't use nulls in your arrays, change the type of the property to byte[]/char[]. To allow explicit uses of the wrapper types Byte[]/Character[] which allows null element but has a different serialization format than before Hibernate 6.2, configure the setting hibernate.type.wrapper_array_handling to the value ALLOW. To revert to the legacy treatment of these types, configure the value to LEGACY. For more information on this matter, consult the migration guide of Hibernate 6.2 and the Javadoc of the org.hibernate.cfg.AvailableSettings.WRAPPER_ARRAY_HANDLING field.
+2023-10-25T23:57:07.147+03:00  INFO 19284 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-10-25T23:57:07.169+03:00  INFO 19284 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-10-25T23:57:07.170+03:00  INFO 19284 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2023-10-25T23:57:07.178+03:00  INFO 19284 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2023-10-25T23:57:07.216+03:00 ERROR 19284 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.MappingException: The property com.example.ToriApi.Photo.Photo#image uses a wrapper type Byte[]/Character[] which indicates an issue in your domain model. These types have been treated like byte[]/char[] until Hibernate 6.2 which meant that null elements were not allowed, but on JDBC were processed like VARBINARY or VARCHAR. If you don't use nulls in your arrays, change the type of the property to byte[]/char[]. To allow explicit uses of the wrapper types Byte[]/Character[] which allows null element but has a different serialization format than before Hibernate 6.2, configure the setting hibernate.type.wrapper_array_handling to the value ALLOW. To revert to the legacy treatment of these types, configure the value to LEGACY. For more information on this matter, consult the migration guide of Hibernate 6.2 and the Javadoc of the org.hibernate.cfg.AvailableSettings.WRAPPER_ARRAY_HANDLING field.
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1770) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1158) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:932) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:608) ~[spring-context-6.0.12.jar:6.0.12]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1309) ~[spring-boot-3.1.4.jar:3.1.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1298) ~[spring-boot-3.1.4.jar:3.1.4]
+	at com.example.ToriApi.ToriApiApplication.main(ToriApiApplication.java:9) ~[classes/:na]
+Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.MappingException: The property com.example.ToriApi.Photo.Photo#image uses a wrapper type Byte[]/Character[] which indicates an issue in your domain model. These types have been treated like byte[]/char[] until Hibernate 6.2 which meant that null elements were not allowed, but on JDBC were processed like VARBINARY or VARCHAR. If you don't use nulls in your arrays, change the type of the property to byte[]/char[]. To allow explicit uses of the wrapper types Byte[]/Character[] which allows null element but has a different serialization format than before Hibernate 6.2, configure the setting hibernate.type.wrapper_array_handling to the value ALLOW. To revert to the legacy treatment of these types, configure the value to LEGACY. For more information on this matter, consult the migration guide of Hibernate 6.2 and the Javadoc of the org.hibernate.cfg.AvailableSettings.WRAPPER_ARRAY_HANDLING field.
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:421) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:352) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1817) ~[spring-beans-6.0.12.jar:6.0.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1766) ~[spring-beans-6.0.12.jar:6.0.12]
+	... 16 common frames omitted
+Caused by: org.hibernate.MappingException: The property com.example.ToriApi.Photo.Photo#image uses a wrapper type Byte[]/Character[] which indicates an issue in your domain model. These types have been treated like byte[]/char[] until Hibernate 6.2 which meant that null elements were not allowed, but on JDBC were processed like VARBINARY or VARCHAR. If you don't use nulls in your arrays, change the type of the property to byte[]/char[]. To allow explicit uses of the wrapper types Byte[]/Character[] which allows null element but has a different serialization format than before Hibernate 6.2, configure the setting hibernate.type.wrapper_array_handling to the value ALLOW. To revert to the legacy treatment of these types, configure the value to LEGACY. For more information on this matter, consult the migration guide of Hibernate 6.2 and the Javadoc of the org.hibernate.cfg.AvailableSettings.WRAPPER_ARRAY_HANDLING field.
+	at org.hibernate.mapping.Property.isValid(Property.java:290) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.mapping.PersistentClass.validate(PersistentClass.java:742) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.mapping.RootClass.validate(RootClass.java:288) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.boot.internal.MetadataImpl.validate(MetadataImpl.java:497) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:251) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:444) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1455) ~[hibernate-core-6.2.9.Final.jar:6.2.9.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:376) ~[spring-orm-6.0.12.jar:6.0.12]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.0.12.jar:6.0.12]
+	... 20 common frames omitted
+
