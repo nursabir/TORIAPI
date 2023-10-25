@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -45,7 +46,6 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
     public ResponseEntity<?> sendFriendRequest(Integer id, String login) {
         System.out.println("Отправляем заявку в друзья");
         try {
@@ -53,14 +53,22 @@ public class UserService {
             Optional<User> userOptional2 = userRepository.findByLogin(login);
 
             if (userOptional.isPresent() && userOptional2.isPresent()) {
-                User user = userOptional.get(); // чел, который отправляет заявку
+                User userSender = userOptional.get(); // Человек, который отправляет заявку
+                User userRequester = userOptional2.get(); // Человек, которому заявку отправили
 
-                User user2 = userOptional2.get(); // чел, которому заявку отправили
-//                user.getFriends().add(login);// создали заявку как друга
-                user2.getFriendsRequests().add(user.getLogin()); // add login as request
-                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
-                // у друга во friendsList
-                return ResponseEntity.ok().body("Заявку создали");
+                // Проверяем, чтобы не было дублирующихся запросов
+                if (!userRequester.getFriendsRequests().contains(userSender.getLogin())) {
+                    userRequester.getFriendsRequests().add(userSender.getLogin()); // Добавляем отправителя в список запросов у получателя
+//                    userSender.getFriendsRequests().add(userRequester.getLogin()); // Добавляем получателя в список запросов у отправителя
+
+                    // Сохраняем изменения в базе данных
+//                    userRepository.save(userSender);
+                    userRepository.save(userRequester);
+
+                    return ResponseEntity.ok().body("Заявку создали");
+                } else {
+                    return ResponseEntity.ok().body("Заявка уже существует");
+                }
             } else {
                 return ResponseEntity.notFound().build();
             }
@@ -72,6 +80,33 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+//    public ResponseEntity<?> sendFriendRequest(Integer id, String login) {
+//        System.out.println("Отправляем заявку в друзья");
+//        try {
+//            Optional<User> userOptional = userRepository.findById(id);
+//            Optional<User> userOptional2 = userRepository.findByLogin(login);
+//
+//            if (userOptional.isPresent() && userOptional2.isPresent()) {
+//                User userSender = userOptional.get(); // чел, который отправляет заявку
+//
+//                User userRequester = userOptional2.get(); // чел, которому заявку отправили
+////                user.getFriends().add(login);// создали заявку как друга
+//                userRequester.getFriendsRequests().add(userSender.getLogin()); // add login as request
+//                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
+//                // у друга во friendsList
+//                return ResponseEntity.ok().body("Заявку создали");
+//            } else {
+//                return ResponseEntity.notFound().build();
+//            }
+//        } catch (ResourceNotFoundException exception) {
+//            logger.error("Error while getting user", exception);
+//            return ResponseEntity.notFound().build();
+//        } catch (Exception exception) {
+//            logger.error("Internal server error", exception);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
     public ResponseEntity<?> acceptFriendRequest(Integer id, String login) {
         System.out.println("Принимаем заявку в друзья");
@@ -88,7 +123,7 @@ public class UserService {
                 userRequester.getFriends().add(userAccepter.getLogin());
                 
                 //удаляем такой фриенд реквест
-                userRepository.removeFromFriendsRequestsById(userAccepter.getId(), userRequester.getLogin());
+                userRepository.updateFriendsRequests(userAccepter.getId(), Collections.singletonList(userRequester.getLogin()));
                 // TODO: 24.10.2023  как я пойму у того ли типа я удаляю ?
 
                 
@@ -118,7 +153,12 @@ public class UserService {
                 User userRequester = userOptional2.get(); // чел, который отправил
 
                 //удаляем такой фриенд реквест
-                userRepository.removeFromFriendsRequestsById(userAccepter.getId(), userRequester.getLogin());
+                List<String> friendsRequests = userAccepter.getFriendsRequests();
+                friendsRequests.remove(userRequester.getLogin());
+                /**
+                 * мы типа обновляем список без этого логина
+                 */
+                userRepository.updateFriendsRequests(userAccepter.getId(), friendsRequests);
                 // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
                 // у друга во friendsList
 
