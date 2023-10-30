@@ -12,8 +12,11 @@ import java.util.Optional;
  * @author Bulat Sharapov
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
+    @Transactional
     Optional<User> findByLogin(String login);
+    @Transactional
     Optional<User> findById(Integer id);
+
     @Transactional
     @Modifying
     @Query("UPDATE User u SET u.friendsRequests = :newFriendsRequests WHERE u.id = :userId")

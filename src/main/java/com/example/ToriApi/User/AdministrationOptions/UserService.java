@@ -34,144 +34,116 @@ public class UserService {
      */
     public ResponseEntity<User> getUserByLogin(String login) {
         System.out.println("Ищем по логину");
-        try {
-            User user = userRepository.findByLogin(login)
-                    .orElseThrow(() -> new ResourceNotFoundException("We dont have this login in database: " + login));
-            return ResponseEntity.ok().body(user);
-        } catch (ResourceNotFoundException exception) {
-            logger.error("Error while getting user", exception);
-            return ResponseEntity.notFound().build();
-        } catch (Exception exception) {
-            logger.error("Internal server error", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new ResourceNotFoundException("We dont have this login in database: " + login));
+        return ResponseEntity.ok().body(user);
     }
+
     public ResponseEntity<?> sendFriendRequest(Integer id, String login) {
         System.out.println("Отправляем заявку в друзья");
-        try {
-            Optional<User> userOptional = userRepository.findById(id);
-            Optional<User> userOptional2 = userRepository.findByLogin(login);
+        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional2 = userRepository.findByLogin(login);
 
-            if (userOptional.isPresent() && userOptional2.isPresent()) {
-                User userSender = userOptional.get(); // Человек, который отправляет заявку
-                User userRequester = userOptional2.get(); // Человек, которому заявку отправили
-
-                // Проверяем, чтобы не было дублирующихся запросов
-                if (!userRequester.getFriendsRequests().contains(userSender.getLogin())) {
-                    userRequester.getFriendsRequests().add(userSender.getLogin()); // Добавляем отправителя в список запросов у получателя
-//                    userSender.getFriendsRequests().add(userRequester.getLogin()); // Добавляем получателя в список запросов у отправителя
-
-                    // Сохраняем изменения в базе данных
-//                    userRepository.save(userSender);
-                    userRepository.save(userRequester);
-
-                    return ResponseEntity.ok().body("Заявку создали");
-                } else {
-                    return ResponseEntity.ok().body("Заявка уже существует");
-                }
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ResourceNotFoundException exception) {
-            logger.error("Error while getting user", exception);
+        if (userOptional.isEmpty() || userOptional2.isEmpty()) {
             return ResponseEntity.notFound().build();
-        } catch (Exception exception) {
-            logger.error("Internal server error", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        User userSender = userOptional.get(); // Человек, который отправляет заявку
+        User userRequester = userOptional2.get(); // Человек, которому заявку отправили
+
+        // Проверяем, чтобы не было дублирующихся запросов
+        if (!userRequester.getFriendsRequests().contains(userSender.getLogin())) {
+            userRequester.getFriendsRequests().add(userSender.getLogin()); // Добавляем отправителя в список запросов у получателя
+
+            userRepository.save(userRequester);
+
+            return ResponseEntity.ok().body("Заявку создали");
+        } else {
+            return ResponseEntity.ok().body("Заявка уже существует");
         }
     }
-
-//    public ResponseEntity<?> sendFriendRequest(Integer id, String login) {
-//        System.out.println("Отправляем заявку в друзья");
-//        try {
-//            Optional<User> userOptional = userRepository.findById(id);
-//            Optional<User> userOptional2 = userRepository.findByLogin(login);
-//
-//            if (userOptional.isPresent() && userOptional2.isPresent()) {
-//                User userSender = userOptional.get(); // чел, который отправляет заявку
-//
-//                User userRequester = userOptional2.get(); // чел, которому заявку отправили
-////                user.getFriends().add(login);// создали заявку как друга
-//                userRequester.getFriendsRequests().add(userSender.getLogin()); // add login as request
-//                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
-//                // у друга во friendsList
-//                return ResponseEntity.ok().body("Заявку создали");
-//            } else {
-//                return ResponseEntity.notFound().build();
-//            }
-//        } catch (ResourceNotFoundException exception) {
-//            logger.error("Error while getting user", exception);
-//            return ResponseEntity.notFound().build();
-//        } catch (Exception exception) {
-//            logger.error("Internal server error", exception);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
 
     public ResponseEntity<?> acceptFriendRequest(Integer id, String login) {
+        System.out.println("start");
         System.out.println("Принимаем заявку в друзья");
-        try {
-            Optional<User> userOptional = userRepository.findById(id);
-            Optional<User> userOptional2 = userRepository.findByLogin(login);
+        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional2 = userRepository.findByLogin(login);
 
-            if (userOptional.isPresent() && userOptional2.isPresent()) {
-                User userAccepter = userOptional.get(); // чел, который принимает заявку
-                User userRequester = userOptional2.get(); // чел, который отправил
-
-                // друг другу логины как кореша
-                userAccepter.getFriends().add(userRequester.getLogin());
-                userRequester.getFriends().add(userAccepter.getLogin());
-                
-                //удаляем такой фриенд реквест
-                userRepository.updateFriendsRequests(userAccepter.getId(), Collections.singletonList(userRequester.getLogin()));
-                // TODO: 24.10.2023  как я пойму у того ли типа я удаляю ?
-
-                
-                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
-                // у друга во friendsList
-                return ResponseEntity.ok().body("Заявку создали");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ResourceNotFoundException exception) {
-            logger.error("Error while getting user", exception);
+        if (userOptional.isEmpty() || userOptional2.isEmpty()) {
             return ResponseEntity.notFound().build();
-        } catch (Exception exception) {
-            logger.error("Internal server error", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } else if (!userOptional.get().getFriendsRequests().contains(login))
+            return ResponseEntity.notFound().build();
+
+        User userAccepter = userOptional.get(); // чел, который принимает заявку
+        User userRequester = userOptional2.get(); // чел, который отправил
+
+        if (userAccepter.getFriends().contains(login)) {
+            //удаляем такой фриенд реквест
+
+            userRepository.updateFriendsRequests(userAccepter.getId(), Collections.singletonList(userRequester.getLogin()));
+            return ResponseEntity.badRequest().body("Такой друг уже есть.");
         }
+
+        // друг другу логины как кореша
+        userAccepter.getFriends().add(userRequester.getLogin());
+        userRequester.getFriends().add(userAccepter.getLogin());
+
+        userAccepter.getFriendsRequests().remove(userRequester.getLogin());
+        userRepository.save(userAccepter);
+
+        System.out.println();
+        return ResponseEntity.ok().body("Добавили вашего друга !");
+
     }
+
 
     public ResponseEntity<?> rejectFriendRequest(Integer id, String login) {
         System.out.println("Отклоняем заявку в друзья");
-        try {
-            Optional<User> userOptional = userRepository.findById(id);
-            Optional<User> userOptional2 = userRepository.findByLogin(login);
+        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional2 = userRepository.findByLogin(login);
 
-            if (userOptional.isPresent() && userOptional2.isPresent()) {
-                User userAccepter = userOptional.get(); // чел, который отклоняет заявку
-                User userRequester = userOptional2.get(); // чел, который отправил
-
-                //удаляем такой фриенд реквест
-                List<String> friendsRequests = userAccepter.getFriendsRequests();
-                friendsRequests.remove(userRequester.getLogin());
-                /**
-                 * мы типа обновляем список без этого логина
-                 */
-                userRepository.updateFriendsRequests(userAccepter.getId(), friendsRequests);
-                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
-                // у друга во friendsList
-
-                return ResponseEntity.ok().body("Заявку создали");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ResourceNotFoundException exception) {
-            logger.error("Error while getting user", exception);
+        if (userOptional.isEmpty() || userOptional2.isEmpty()) {
             return ResponseEntity.notFound().build();
-        } catch (Exception exception) {
-            logger.error("Internal server error", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } else if (!userOptional.get().getFriendsRequests().contains(login))
+            return ResponseEntity.notFound().build();
+
+        User userWhoRejectFriend = userOptional.get(); // чел, который отклоняет
+        User userWhoRejected = userOptional2.get(); // чел, которого отклоняют
+
+        //удаляем такой фриенд реквест
+        userWhoRejectFriend.getFriendsRequests().remove(userWhoRejected.getLogin());
+
+//        List<String> friendsRequests = userWhoRejectFriend.getFriendsRequests();
+//        friendsRequests.remove(userWhoRejected.getLogin());
+        /**
+         * мы типа обновляем список без этого логина
+         */
+        userRepository.save(userWhoRejectFriend);
+//        userRepository.updateFriendsRequests(userAccepter.getId(), friendsRequests);
+        // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
+        // у друга во friendsList
+
+        return ResponseEntity.ok().body("Друга Отклонили");
+    }
+
+    public ResponseEntity<?> deleteFriend(Integer id, String login) {
+        System.out.println("Удаляем из друзей");
+        Optional<User> userDeleter = userRepository.findById(id); // чел который удаляет
+        Optional<User> userMarukha = userRepository.findByLogin(login);// обиженка маруха
+
+        if (userDeleter.isEmpty() || userMarukha.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+        User userWhoDeleteFriend = userDeleter.get();
+        User userWhoDeleted = userMarukha.get(); // хоть где-то маруха полезен
+
+            if (userWhoDeleteFriend.getLogin().equals(userWhoDeleted.getLogin())){
+                return ResponseEntity.badRequest().body("Это вообще то ты сам, другалечек");
+            }
+
+        userWhoDeleteFriend.getFriends().remove(userWhoDeleted.getLogin());
+        userWhoDeleted.getFriends().remove(userWhoDeleteFriend.getLogin());
+
+        userRepository.save(userWhoDeleteFriend);
+        return ResponseEntity.ok().body("Корешок (Маруха) удален");
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -34,54 +35,41 @@ public class UserPrivacyService {
      */
     public ResponseEntity<?> createUser(User user) {
         System.out.println("Создаем юзера");
-        try {
-            if (userRepository.findById(user.getId()).isPresent())
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("We have this id in database: ");
-            else {
-                User createUser = userRepository.save(user);
-                return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
-            }
-        } catch (Exception e) {
-            logger.error("Smth goes wrong ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        if (userRepository.findById(user.getId()).isPresent())
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("We have this id in database: ");
+        else {
+            User createUser = userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
         }
     }
 
-    public ResponseEntity<User> allowIn(String login, String enteredPassword) {
+    public ResponseEntity<User> allowInTori(String login, String enteredPassword) {
         System.out.println("Проверяем соответствие пароля");
-        try {
-            User allowInUser = userRepository.findByLogin(login)
-                    .orElseThrow(() -> new ResourceNotFoundException("We dont have this login in database: " + login));
-            if (enteredPassword.equals(allowInUser.getPassword())) {
-                // Пароли совпадают, возвращаем успешный статус со сущностью пользователя
-                return ResponseEntity.ok(allowInUser);
-            } else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (Exception e) {
-            logger.error("Smth goes wrong ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        User allowInUser = userRepository.findByLogin(login)
+                .orElseThrow(() -> new ResourceNotFoundException("We dont have this login in database: " + login));
+        if (enteredPassword.equals(allowInUser.getPassword())) {
+            // Пароли совпадают, возвращаем успешный статус со сущностью пользователя
+            return ResponseEntity.ok(allowInUser);
+        } else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     // TODO: 23.10.2023  пока не понимаю что мы тут менять будем.
     // Пока все поменяем кроме внешнего ключа (логин)
     public ResponseEntity<User> updateUserData(User user) {
         System.out.println("Обновляем данные о пользователе");
-        try {
-            Optional<User> currentUser = userRepository.findById(user.getId());
+        Optional<User> currentUser = userRepository.findById(user.getId());
+        if (currentUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            User existingUser = currentUser.get();
+            existingUser.setLogin(user.getLogin());
+            // TODO: 26.10.2023  теперь надо придумать, чтобы он у всех корешей обновлялся.
 
-            if (currentUser.isPresent()) {
-                User existingUser = currentUser.get();
-                existingUser.setLogin(user.getLogin());
+            List<User> friendsToUpdate;
+//            existingUser.getFriends().forEach(c -> c);
 
-                userRepository.save(existingUser);
-
-                return ResponseEntity.ok(existingUser);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            logger.error("Smth goes wrong ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            userRepository.save(existingUser);
+            return ResponseEntity.ok(existingUser);
         }
     }
 }

@@ -23,7 +23,7 @@ public class PrivacyController {
 
     @PostMapping("/entry")
     public ResponseEntity<User> entranceInTory(@RequestParam String login, @RequestParam String password) {
-        return userPrivacyService.allowIn(login, password);
+        return userPrivacyService.allowInTori(login, password);
     }
 
     @PostMapping("/updateData")
