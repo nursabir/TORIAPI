@@ -1,6 +1,7 @@
 package com.example.ToriApi.User.PrivacyOptions;
 
-import com.example.ToriApi.User.User;
+import com.example.ToriApi.User.DTO.RegisterUserRequestDto;
+import com.example.ToriApi.User.Entityes.User;
 import com.example.ToriApi.User.AdministrationOptions.UserAdministrationController;
 import com.example.ToriApi.User.UserRepository;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,16 +29,21 @@ public class UserPrivacyService {
     private final Logger logger = LoggerFactory.getLogger(UserAdministrationController.class);
 
     /**
-     * @param user нужен для регистрации юзера
+     * @param dto нужен для регистрации юзера
      * @return В этом случае ? (wildcard type) мне нужен т.к я могу вернуть либо сообщение, либо созданного пользователя
      * Знак вопроса <?> указывает, что тип данных неопределен и может быть заменен на любой тип в контексте использования
      */
-    public ResponseEntity<?> createUser(User user) {
+    public ResponseEntity<?> createUser(RegisterUserRequestDto dto) {
         System.out.println("Создаем юзера");
-        if (userRepository.findById(user.getId()).isPresent())
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("We have this id in database: ");
+        if (userRepository.existsUserByLogin(dto.getLogin()))
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("We have this login in database: ");
         else {
-            User createUser = userRepository.save(user);
+            User createUser = User.builder()
+                    .login(dto.getLogin())
+                    .password(dto.getPassword())
+                    .email(dto.getEmail())
+                    .build();
+            userRepository.save(createUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(createUser);
         }
     }
@@ -63,11 +68,6 @@ public class UserPrivacyService {
         } else {
             User existingUser = currentUser.get();
             existingUser.setLogin(user.getLogin());
-            // TODO: 26.10.2023  теперь надо придумать, чтобы он у всех корешей обновлялся.
-
-            List<User> friendsToUpdate;
-//            existingUser.getFriends().forEach(c -> c);
-
             userRepository.save(existingUser);
             return ResponseEntity.ok(existingUser);
         }
