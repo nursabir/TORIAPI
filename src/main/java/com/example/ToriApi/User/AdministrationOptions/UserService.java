@@ -1,17 +1,15 @@
 package com.example.ToriApi.User.AdministrationOptions;
 
-import com.example.ToriApi.User.User;
+import com.example.ToriApi.User.Entityes.User;
 import com.example.ToriApi.User.UserRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,10 +17,10 @@ import java.util.Optional;
  */
 @Service
 @AllArgsConstructor
-
 public class UserService {
     private UserRepository userRepository;
-    private final Logger logger = LoggerFactory.getLogger(UserAdministrationController.class);
+
+//    private FriendsRequests friendsRequests;
 
 
     /**
@@ -34,144 +32,98 @@ public class UserService {
      */
     public ResponseEntity<User> getUserByLogin(String login) {
         System.out.println("Ищем по логину");
-        try {
-            User user = userRepository.findByLogin(login)
-                    .orElseThrow(() -> new ResourceNotFoundException("We dont have this login in database: " + login));
-            return ResponseEntity.ok().body(user);
-        } catch (ResourceNotFoundException exception) {
-            logger.error("Error while getting user", exception);
-            return ResponseEntity.notFound().build();
-        } catch (Exception exception) {
-            logger.error("Internal server error", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new ResourceNotFoundException("We dont have this login in database: " + login));
+        return ResponseEntity.ok().body(user);
     }
-    public ResponseEntity<?> sendFriendRequest(Integer id, String login) {
+
+    @Transactional
+    public ResponseEntity<String> sendFriendRequest(Integer id, String login) {
         System.out.println("Отправляем заявку в друзья");
-        try {
-            Optional<User> userOptional = userRepository.findById(id);
-            Optional<User> userOptional2 = userRepository.findByLogin(login);
+        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional2 = userRepository.findByLogin(login);
 
-            if (userOptional.isPresent() && userOptional2.isPresent()) {
-                User userSender = userOptional.get(); // Человек, который отправляет заявку
-                User userRequester = userOptional2.get(); // Человек, которому заявку отправили
-
-                // Проверяем, чтобы не было дублирующихся запросов
-                if (!userRequester.getFriendsRequests().contains(userSender.getLogin())) {
-                    userRequester.getFriendsRequests().add(userSender.getLogin()); // Добавляем отправителя в список запросов у получателя
-//                    userSender.getFriendsRequests().add(userRequester.getLogin()); // Добавляем получателя в список запросов у отправителя
-
-                    // Сохраняем изменения в базе данных
-//                    userRepository.save(userSender);
-                    userRepository.save(userRequester);
-
-                    return ResponseEntity.ok().body("Заявку создали");
-                } else {
-                    return ResponseEntity.ok().body("Заявка уже существует");
-                }
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ResourceNotFoundException exception) {
-            logger.error("Error while getting user", exception);
+        if (userOptional.isEmpty() || userOptional2.isEmpty()) {
             return ResponseEntity.notFound().build();
-        } catch (Exception exception) {
-            logger.error("Internal server error", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+        User userSender = userOptional.get(); // Человек, который отправляет заявку
+        User userRequester = userOptional2.get(); // Человек, которому заявку отправили
+
+//         Проверяем, чтобы не было дублирующихся запросов
+
+        userRequester.getFriendsRequests().add(userSender); // Добавляем отправителя в список запросов у получателя
+        userRepository.save(userRequester);
+        return ResponseEntity.ok().body("Заявку создали");
     }
 
-//    public ResponseEntity<?> sendFriendRequest(Integer id, String login) {
-//        System.out.println("Отправляем заявку в друзья");
-//        try {
-//            Optional<User> userOptional = userRepository.findById(id);
-//            Optional<User> userOptional2 = userRepository.findByLogin(login);
-//
-//            if (userOptional.isPresent() && userOptional2.isPresent()) {
-//                User userSender = userOptional.get(); // чел, который отправляет заявку
-//
-//                User userRequester = userOptional2.get(); // чел, которому заявку отправили
-////                user.getFriends().add(login);// создали заявку как друга
-//                userRequester.getFriendsRequests().add(userSender.getLogin()); // add login as request
-//                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
-//                // у друга во friendsList
-//                return ResponseEntity.ok().body("Заявку создали");
-//            } else {
-//                return ResponseEntity.notFound().build();
-//            }
-//        } catch (ResourceNotFoundException exception) {
-//            logger.error("Error while getting user", exception);
-//            return ResponseEntity.notFound().build();
-//        } catch (Exception exception) {
-//            logger.error("Internal server error", exception);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-
+    @Transactional
     public ResponseEntity<?> acceptFriendRequest(Integer id, String login) {
+        System.out.println("start");
         System.out.println("Принимаем заявку в друзья");
-        try {
-            Optional<User> userOptional = userRepository.findById(id);
-            Optional<User> userOptional2 = userRepository.findByLogin(login);
+        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional2 = userRepository.findByLogin(login);
 
-            if (userOptional.isPresent() && userOptional2.isPresent()) {
-                User userAccepter = userOptional.get(); // чел, который принимает заявку
-                User userRequester = userOptional2.get(); // чел, который отправил
-
-                // друг другу логины как кореша
-                userAccepter.getFriends().add(userRequester.getLogin());
-                userRequester.getFriends().add(userAccepter.getLogin());
-                
-                //удаляем такой фриенд реквест
-                userRepository.updateFriendsRequests(userAccepter.getId(), Collections.singletonList(userRequester.getLogin()));
-                // TODO: 24.10.2023  как я пойму у того ли типа я удаляю ?
-
-                
-                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
-                // у друга во friendsList
-                return ResponseEntity.ok().body("Заявку создали");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ResourceNotFoundException exception) {
-            logger.error("Error while getting user", exception);
+        if (userOptional.isEmpty() || userOptional2.isEmpty()) {
             return ResponseEntity.notFound().build();
-        } catch (Exception exception) {
-            logger.error("Internal server error", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
+        User userAccepter = userOptional.get(); // чел, который принимает заявку
+        User userRequester = userOptional2.get(); // чел, который отправил
+
+        if (!userOptional.get().getFriendsRequests().contains(userRequester))
+            return ResponseEntity.notFound().build();
+        userAccepter.getFriends().add(userRequester);
+        userRequester.getFriends().add(userAccepter);
+
+        userAccepter.getFriendsRequests().remove(userRequester);
+        userRepository.save(userAccepter);
+
+        System.out.println();
+        return ResponseEntity.ok().body("Добавили вашего друга !");
     }
 
+    @Transactional
     public ResponseEntity<?> rejectFriendRequest(Integer id, String login) {
         System.out.println("Отклоняем заявку в друзья");
-        try {
-            Optional<User> userOptional = userRepository.findById(id);
-            Optional<User> userOptional2 = userRepository.findByLogin(login);
+        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional2 = userRepository.findByLogin(login);
 
-            if (userOptional.isPresent() && userOptional2.isPresent()) {
-                User userAccepter = userOptional.get(); // чел, который отклоняет заявку
-                User userRequester = userOptional2.get(); // чел, который отправил
-
-                //удаляем такой фриенд реквест
-                List<String> friendsRequests = userAccepter.getFriendsRequests();
-                friendsRequests.remove(userRequester.getLogin());
-                /**
-                 * мы типа обновляем список без этого логина
-                 */
-                userRepository.updateFriendsRequests(userAccepter.getId(), friendsRequests);
-                // если так кринжово делаем, то фотка будет отображаться тогда, когда оба друг
-                // у друга во friendsList
-
-                return ResponseEntity.ok().body("Заявку создали");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ResourceNotFoundException exception) {
-            logger.error("Error while getting user", exception);
+        if (userOptional.isEmpty() || userOptional2.isEmpty()) {
             return ResponseEntity.notFound().build();
-        } catch (Exception exception) {
-            logger.error("Internal server error", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
+        User userWhoRejectFriend = userOptional.get(); // чел, который отклоняет
+        User userWhoRejected = userOptional2.get(); // чел, которого отклоняют
+
+        if (!userOptional.get().getFriendsRequests().contains(userWhoRejected))
+            return ResponseEntity.notFound().build();
+
+        userWhoRejectFriend.getFriendsRequests().remove(userWhoRejected);
+        userRepository.save(userWhoRejectFriend);
+        return ResponseEntity.ok().body("Друга Отклонили");
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteFriend(Integer id, String login) {
+        System.out.println("Удаляем из друзей");
+        Optional<User> userDeleter = userRepository.findById(id); // чел который удаляет
+        Optional<User> userMarukha = userRepository.findByLogin(login);// обиженка маруха
+
+        if (userDeleter.isEmpty() || userMarukha.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        User userWhoDeleteFriend = userDeleter.get();
+        User userWhoDeleted = userMarukha.get(); // хоть где-то маруха полезен
+
+        if (userWhoDeleteFriend.getLogin().equals(userWhoDeleted.getLogin())) {
+            return ResponseEntity.badRequest().body("Это вообще то ты сам, другалечек");
+        }
+
+        userWhoDeleteFriend.getFriends().remove(userWhoDeleted);
+        userWhoDeleted.getFriends().remove(userWhoDeleteFriend);
+
+        userRepository.save(userWhoDeleteFriend);
+        return ResponseEntity.ok().body("Корешок (Маруха) удален");
     }
 }
+
