@@ -1,8 +1,8 @@
 package com.example.ToriApi.User.AdministrationOptions;
 
-import com.example.ToriApi.User.User;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.example.ToriApi.User.Entityes.User;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ public class UserAdministrationController {
      * @param id    айди человека, который отправляет заявку на добавление в друзья
      * @param login логин человека, которому он отправляет эту заявку
      */
-    @PostMapping("{id}/sendFriendRequest/{login}")
+    @PostMapping(value = "{id}/sendFriendRequest/{login}", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<?> sendFriendRequest(@PathVariable Integer id, @PathVariable String login) {
         return userService.sendFriendRequest(id, login);
     }
