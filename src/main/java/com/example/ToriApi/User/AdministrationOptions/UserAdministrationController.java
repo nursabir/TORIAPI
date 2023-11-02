@@ -20,6 +20,11 @@ public class UserAdministrationController {
 // TODO: 20.10.2023 Баха сказал, что все хуйня надо переделывать
     private UserService userService;
 
+    @GetMapping("/check")
+    public ResponseEntity<String> check(){
+        return ResponseEntity.ok().body("Кэмалоф Лен");
+    }
+
     @PostMapping("/{login}")
     public ResponseEntity<User> getUserByLogin(@PathVariable String login) {
         return userService.getUserByLogin(login);
