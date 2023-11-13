@@ -1,9 +1,16 @@
 package com.example.ToriApi.User.Entityes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +23,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
@@ -34,16 +41,7 @@ public class User {
     @Schema(example = "john@example.com")
     private String email;
 
-
-//    @Column(name = "friends_array", columnDefinition = "INTEGER[]")
-//    @Convert(converter = IntegerListConverter.class)
-//    private List<Integer> friends;
-////    private String friends;
-//
-//    @Column(name = "friends_requests", columnDefinition = "INTEGER[]")
-//    @Convert(converter = IntegerListConverter.class)
-//    private List<Integer> friendsRequests;
-
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "friends_requests",
@@ -51,6 +49,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "id_user")}
     )
     private Set<User> myRequests;
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "friends_requests",
@@ -63,6 +62,7 @@ public class User {
 //mappedBy сообщает Hibernate,
 // kакое поле в связанной сущности используется для хранения информации об отношении.
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "friends",
@@ -71,9 +71,122 @@ public class User {
     )
     private Set<User> friends;
 
+    /**
+     * @return должен возвращать набор привелегий юзера
+     * но в нашем сучае пока все что он возращает, это что
+     * все пользователи имеют роль юзера.
+     * все другие методы возвращают тру потому что
+     * пока нет блокировки и остальных методов
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
 
-//    @OneToMany(mappedBy = "sender")
-//    private List<User> sentFriendRequests;
+    @Override
+    public String getUsername() {
+        return getLogin();
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
 
+
+//package com.example.ToriApi.User.Entityes;
+//
+//import io.swagger.v3.oas.annotations.media.Schema;
+//import jakarta.persistence.*;
+//import lombok.*;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
+//
+//import java.util.Arrays;
+//import java.util.Collection;
+//import java.util.List;
+//import java.util.Set;
+//
+///**
+// * @author Bulat Sharapov
+// */
+//@Table(name = "tori_user", uniqueConstraints = @UniqueConstraint(columnNames = "login"))
+//@Entity
+//@Getter
+//@Setter
+//@Builder
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class User {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "id_user")
+//    @Schema(example = "0")
+//    private Integer id;
+//
+//    //    @Id
+//    @Column(name = "login", unique = true)
+//    @Schema(example = "john_doe")
+//    private String login;
+//    @Column(name = "password")
+//    @Schema(example = "secretpassword")
+//    private String password;
+//    @Column(name = "email")
+//    @Schema(example = "john@example.com")
+//    private String email;
+//
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "friends_requests",
+//            joinColumns = {@JoinColumn(name = "id_user_sender")},
+//            inverseJoinColumns = {@JoinColumn(name = "id_user")}
+//    )
+//    private Set<User> myRequests;
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "friends_requests",
+//            joinColumns = {@JoinColumn(name = "id_user")},
+//            inverseJoinColumns = {@JoinColumn(name = "id_user_sender")}
+//    )
+//    private Set<User> friendsRequests;
+//
+//
+////mappedBy сообщает Hibernate,
+//// kакое поле в связанной сущности используется для хранения информации об отношении.
+//
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "friends",
+//            joinColumns = {@JoinColumn(name = "id_user")},
+//            inverseJoinColumns = {@JoinColumn(name = "id_user_friend")}
+//    )
+//    private Set<User> friends;
+//
+//    /**
+//     *
+//     * @return должен возвращать набор привелегий юзера
+//     * но в нашем сучае пока все что он возращает, это что
+//     * все пользователи имеют роль юзера.
+//     * все другие методы возвращают тру потому что
+//     * пока нет блокировки и остальных методов
+//     */
+//
+//}
+//

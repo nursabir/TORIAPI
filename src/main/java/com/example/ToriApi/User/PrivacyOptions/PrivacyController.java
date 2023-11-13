@@ -2,13 +2,10 @@ package com.example.ToriApi.User.PrivacyOptions;
 
 import com.example.ToriApi.User.DTO.RegisterUserRequestDto;
 import com.example.ToriApi.User.Entityes.User;
-
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -28,32 +25,22 @@ public class PrivacyController {
      * Знак вопроса <?> указывает, что тип данных неопределен и может быть заменен на любой тип в контексте использования
      */
     @PostMapping("/registerUser")
-   // @ApiOperation(value = "Зарегистрировать пользователя")
-    //@ApiResponses(value = {@io.swagger.annotations.ApiResponse(code = 409, message = "We have this login"), @ApiResponse(code = 201, message = "Успешно создан", response = RegisterUserRequestDto.class)} )
-    @Operation(
-            summary = "Зарегистрировать пользователя",
-            description = "Необходимо делать запрос когда пользователь вводит свои параметры для регистрации"
-    )
     public ResponseEntity<?> userRegistration(@RequestBody RegisterUserRequestDto dto) {
         return userPrivacyService.createUser(dto);
     }
 
-
-    @Operation(
-            summary = "Вход",
-            description = "Вход в приложение по логину и паролю"
-    )
     @PostMapping("/entry")
     public ResponseEntity<User> entranceInTory(@RequestParam String login, @RequestParam String password) {
         return userPrivacyService.allowInTori(login, password);
     }
 
-    @Operation(
-            summary = "Обновить по json usera",
-            description = "В базе поменяются сведения о юзере"
-    )
-    @PostMapping("/updateData")
-    public ResponseEntity<User> updateUserData(@RequestBody User user) {
-        return userPrivacyService.updateUserData(user);
+    /**
+     *
+     * @param id - который есть у каждого пользователя
+     * @param login - который мы хотим поменять
+     */
+    @PatchMapping("/updateData")
+    public ResponseEntity<User> updateUserLogin(@RequestParam Integer id, @RequestParam String login) {
+        return userPrivacyService.updateUserLogin(id, login);
     }
 }

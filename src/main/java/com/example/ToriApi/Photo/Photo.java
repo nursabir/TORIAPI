@@ -1,9 +1,11 @@
 package com.example.ToriApi.Photo;
 
 import com.example.ToriApi.StringListConverter;
+import com.example.ToriApi.User.Entityes.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.List;
 
 /**
  * @author Bulat Sharapov
@@ -12,18 +14,29 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "Photo")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Photo {
+
+    // берется из снаружи
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_photo")
-    private Integer id;
-    @Column(name = "user_id_from") // от кого фотка
-    private String userIdFrom;
-    @Column(name = "user_id_to")
-    @Convert(converter = StringListConverter.class)
-    // TODO: 07.10.2023 ЕСТЬ идея не использовать эту сущность. А просто в бд по user_id_from брать
-    private String[] userIdTo;
-    @Column(name = "image", columnDefinition = "bytea")
-    private Byte image;
+    @Column(name = "uniqIdentifier_photo")
+    private String uniqIdentifier;
+
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sender_id")
+    private User sender;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "photo_recipients",
+            joinColumns = @JoinColumn(name = "photo_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipient_id")
+    )
+    private List<User> recipients;
 
 }
