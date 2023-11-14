@@ -78,7 +78,7 @@ public class UserPrivacyService {
     // TODO: 23.10.2023  пока не понимаю что мы тут менять будем.
     // Пока все поменяем кроме внешнего ключа (логин)
     // парни должны помнить про свой айди как пользователя
-    public ResponseEntity<User> updateUserLogin(Integer id, String login) {
+    public ResponseEntity<User> updateUserLogin(Integer id, String login, String password, String email) {
         System.out.println("Обновляем данные о пользователе");
         Optional<User> currentUser = userRepository.findById(id);
         if (currentUser.isEmpty()) {
@@ -86,6 +86,9 @@ public class UserPrivacyService {
         } else {
             User existingUser = currentUser.get();
             existingUser.setLogin(login); // поменяли на новый блатной логин
+            existingUser.setPassword(passwordEncoder.encode(password));
+            existingUser.setEmail(email);
+
             userRepository.save(existingUser);
             return ResponseEntity.ok(existingUser);
         }

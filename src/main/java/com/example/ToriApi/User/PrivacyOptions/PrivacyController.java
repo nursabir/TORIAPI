@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/privacy")
 @AllArgsConstructor
 public class PrivacyController {
-
     private UserPrivacyService userPrivacyService;
 
     /**
@@ -40,7 +39,10 @@ public class PrivacyController {
      * @param login - который мы хотим поменять
      */
     @PatchMapping("/updateData")
-    public ResponseEntity<User> updateUserLogin(@RequestParam Integer id, @RequestParam String login) {
-        return userPrivacyService.updateUserLogin(id, login);
+    public ResponseEntity<User> updateUserLogin(@RequestParam Integer id,
+                                                @RequestParam String login,
+                                                @RequestParam String password,
+                                                @RequestParam String email) {
+        return userPrivacyService.updateUserLogin(id, login, password, email);
     }
 }
